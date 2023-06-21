@@ -11,7 +11,7 @@ extension MainController {
     enum Constants {
         static let topOffset = 95
         static let horizontalInset = 16
-        enum Subtitle {
+        enum Label {
             static let topOffset = 30
         }
         enum Input {
@@ -19,6 +19,7 @@ extension MainController {
             static let height = 30
         }
     }
+    
     enum Colors {
         static let black = UIColor(red: 45/255, green: 45/255, blue: 45/255, alpha: 1.0)
         static let blue = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0)

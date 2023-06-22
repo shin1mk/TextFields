@@ -1,20 +1,16 @@
 PODS:
-  - InputMask (7.2.8)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
-  - InputMask
   - SnapKit
 
 SPEC REPOS:
   trunk:
-    - InputMask
     - SnapKit
 
 SPEC CHECKSUMS:
-  InputMask: b2257229bf724b9d8adbfa9815c26971ae1efaca
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: daf93331f4b12c0e5cf4632b744671bc63ce23ad
+PODFILE CHECKSUM: 6dfc082b996d6337f0fa2420577792201b39ebd8
 
 COCOAPODS: 1.12.1

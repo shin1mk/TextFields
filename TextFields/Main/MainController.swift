@@ -5,9 +5,11 @@
 //  Created by SHIN MIKHAIL on 20.06.2023.
 //
 
+
 import Foundation
 import UIKit
 import SnapKit
+import Veil
 
 class MainController: UIViewController {
     private let titleLabel: UILabel = {
@@ -37,13 +39,10 @@ class MainController: UIViewController {
         input.layer.borderWidth = 1.0
         input.layer.borderColor = Colors.inputGray.cgColor
         let placeholderFont = UIFont.systemFont(ofSize: 17)
-        let attributedPlaceholder = NSAttributedString(
-            string: placeholder,
-            attributes: [
-                NSAttributedString.Key.foregroundColor: UIColor.lightGray,
-                NSAttributedString.Key.font: placeholderFont
-            ]
-        )
+        let attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
+            .foregroundColor: UIColor.lightGray,
+            .font: placeholderFont
+        ])
         input.attributedPlaceholder = attributedPlaceholder
         return input
     }
@@ -108,13 +107,18 @@ class MainController: UIViewController {
     }()
     private lazy var onlyCharactersInput: UITextField = {
         return createInputTextField(placeholder: "wwwww-ddddd")
+        
     }()
     private lazy var urlLabel: UILabel = {
         return createSubtitleLabel(text: "Link")
     }()
     private lazy var urlInput: UITextField = {
-        return createInputTextField(placeholder: "www.example.com")
+        let textFieldURL = createInputTextField(placeholder: "www.example.com")
+        setupUrlInputTarget(for: textFieldURL)
+        return textFieldURL
     }()
+    
+    
     private lazy var validationLabel: UILabel = {
         return createSubtitleLabel(text: "Validation rules")
     }()
@@ -124,12 +128,14 @@ class MainController: UIViewController {
         return input
     }()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
         setupTapGestureRecognizer()
         setupDelegates()
+        
     }
     
     private func setupUI() {
@@ -264,10 +270,49 @@ class MainController: UIViewController {
         urlInput.delegate = self
         validationInput.delegate = self
     }
-    
+    private func setupUrlInputTarget(for textField: UITextField) {
+        textField.addTarget(self, action: #selector(validateUrl), for: .editingChanged)
+    }
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    
+    
+    
+    
+    // validate url
+    @objc private func validateUrl(_ textField: UITextField) {
+        guard let text = textField.text else {
+            return
+        }
+        let urlRegex = "^(http://)?(https://)?(www\\.)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?([a-zA-Z]{2})?$"
+        let urlPredicate = NSPredicate(format: "SELF MATCHES %@", urlRegex)
+        let isValid = urlPredicate.evaluate(with: text)
+        
+        textField.layer.borderColor = isValid ? Colors.blue.cgColor : UIColor.red.cgColor
+        // if isvalid open safari
+        if isValid {
+            Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
+                var finalURLString = text
+                if !text.hasPrefix("http://") && !text.hasPrefix("https://") {
+                    finalURLString = "http://" + text
+                }
+                guard let url = URL(string: finalURLString) else {
+                    return
+                }
+                UIApplication.shared.open(url)
+            }
+        }
+    }
+    
+    
+    
+    
+    
+    
+    
+    
 }
 // MARK: - textfield
 extension MainController: UITextFieldDelegate {
@@ -285,14 +330,14 @@ extension MainController: UITextFieldDelegate {
             let characterSet = CharacterSet.decimalDigits
             return string.rangeOfCharacter(from: characterSet) == nil
         }
-
+        
         // input count <= 10
         if textField == maxLengthInput {
             guard let text = textField.text else { return true }
             let newLength = text.count + string.count - range.length
             
             if newLength > 10 {
-                return false 
+                return false
             }
             
             maxLengthCountLabel.text = "\(newLength)/10"
@@ -304,7 +349,39 @@ extension MainController: UITextFieldDelegate {
             }
             return true
         }
+        
+        
+        
 
+        if textField == onlyCharactersInput {
+            // Создайте экземпляр Veil с маской
+            let mask = Veil(pattern: "*****-#####")
+
+            // Получите текущий текст поля
+            guard let currentText = textField.text else {
+                return true
+            }
+
+            // Объедините текущий текст с добавленной строкой замены
+            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+
+            // Удалите все символы, кроме букв и цифр
+            _ = updatedText.filter { $0.isLetter || $0.isNumber }
+
+            // Примените маску
+            let maskedText = mask.mask(input: updatedText, exhaustive: false)
+
+            // Установите отформатированный текст в поле
+            textField.text = maskedText
+
+            // Верните false, чтобы предотвратить автоматическую замену текста
+            return false
+        }
+
+        
+        
+        
+        
         
         
         
@@ -342,9 +419,10 @@ extension MainController: UITextFieldDelegate {
             
             return true
         }
-
         return true
     }
+    
+    
     // Function to update label text and color
     private func updateLabel(_ label: UILabel, isValid: Bool, validText: String, invalidText: String) {
         label.text = isValid ? "✓ \(validText)" : "✕ \(invalidText)"
@@ -370,4 +448,59 @@ extension MainController: UITextFieldDelegate {
         let uppercasePredicate = NSPredicate(format: "SELF MATCHES %@", ".*[A-Z].*")
         return uppercasePredicate.evaluate(with: password)
     }
+    
+    
+    
+    
+    
 } // extension textfield
+
+
+
+//
+//
+//
+////изменить ифы на кейс и свитч
+//extension MainController: UITextFieldDelegate {
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        textField.layer.borderColor = Colors.blue.cgColor
+//    }
+//
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        textField.layer.borderColor = Colors.inputGray.cgColor
+//    }
+//
+//    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+//        switch textField {
+//        case noDigitsInput:
+//            let characterSet = CharacterSet.decimalDigits
+//            return string.rangeOfCharacter(from: characterSet) == nil
+//
+//        case maxLengthInput:
+//            guard let text = textField.text else { return true }
+//            let newLength = text.count + string.count - range.length
+//
+//            if newLength > 10 {
+//                return false
+//            }
+//
+//            maxLengthCountLabel.text = "\(newLength)/10"
+//            maxLengthCountLabel.textColor = newLength == 10 ? .red : .black
+//            return true
+//
+//        case onlyCharactersInput:
+//            let regexPattern = "^[a-zA-Z]{5}-\\d{5}-.*$"
+//            let inputString = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? string
+//            let isFormatValid = inputString.range(of: regexPattern, options: .regularExpression) != nil
+//            return isFormatValid
+//
+//        case validationInput:
+//            // Остальная часть вашего кода...
+//            return true
+//
+//        default:
+//            return true
+//        }
+//    }
+//}
+//

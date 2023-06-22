@@ -12,6 +12,7 @@
 		138B27192A410CEB00BD3EEA /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 138B27162A410CEB00BD3EEA /* Rubik-Bold.ttf */; };
 		138B271C2A410DF900BD3EEA /* UIFont+CustomFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138B271B2A410DF900BD3EEA /* UIFont+CustomFonts.swift */; };
 		138B271F2A410FCC00BD3EEA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138B271E2A410FCC00BD3EEA /* Constants.swift */; };
+		13A9799D2A4462760051861F /* Veil in Frameworks */ = {isa = PBXBuildFile; productRef = 13A9799C2A4462760051861F /* Veil */; };
 		13F2E8DF2A41030D008F9345 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8DE2A41030D008F9345 /* AppDelegate.swift */; };
 		13F2E8E12A41030D008F9345 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8E02A41030D008F9345 /* SceneDelegate.swift */; };
 		13F2E8E92A41030D008F9345 /* TextFields.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8E72A41030D008F9345 /* TextFields.xcdatamodeld */; };
@@ -78,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13A9799D2A4462760051861F /* Veil in Frameworks */,
 				98F85D2EAAF030C7A07B4822 /* Pods_TextFields.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -248,6 +250,9 @@
 			dependencies = (
 			);
 			name = TextFields;
+			packageProductDependencies = (
+				13A9799C2A4462760051861F /* Veil */,
+			);
 			productName = TextFields;
 			productReference = 13F2E8DB2A41030D008F9345 /* TextFields.app */;
 			productType = "com.apple.product-type.application";
@@ -323,6 +328,9 @@
 				Base,
 			);
 			mainGroup = 13F2E8D22A41030D008F9345;
+			packageReferences = (
+				13A9799B2A4462760051861F /* XCRemoteSwiftPackageReference "Veil" */,
+			);
 			productRefGroup = 13F2E8DC2A41030D008F9345 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -816,6 +824,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		13A9799B2A4462760051861F /* XCRemoteSwiftPackageReference "Veil" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/DanielCardonaRojas/Veil";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		13A9799C2A4462760051861F /* Veil */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 13A9799B2A4462760051861F /* XCRemoteSwiftPackageReference "Veil" */;
+			productName = Veil;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		13F2E8E72A41030D008F9345 /* TextFields.xcdatamodeld */ = {

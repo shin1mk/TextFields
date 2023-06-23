@@ -22,7 +22,6 @@ extension MainController {
             static let topOffset = 15
             static let offset = 5
         }
-        
     }
     
     enum Colors {
@@ -34,6 +33,5 @@ extension MainController {
         static let red = UIColor(red: 255/255, green: 0/255, blue: 0/255, alpha: 1.0)
         static let blue = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0)
         static let systemBlue = UIColor.systemBlue
-
     }
 }

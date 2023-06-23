@@ -10,7 +10,6 @@ import SnapKit
 import Veil
 
 class MainController: UIViewController {
-    
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Text Fields"
@@ -97,7 +96,7 @@ class MainController: UIViewController {
         setupDelegates()
         setupCustomButton()
     }
-    
+    // button for urlInput
     private func setupCustomButton() {
         let button = UIButton(type: .custom)
         button.setTitle("GO", for: .normal)

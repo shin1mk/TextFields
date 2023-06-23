@@ -10,7 +10,7 @@ import SnapKit
 import Veil
 
 class MainController: UIViewController {
-
+    
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Text Fields"
@@ -32,38 +32,22 @@ class MainController: UIViewController {
     private lazy var minimalLowercaseLabel: UILabel = makeLabel(text: "Min 1 lowercase.")
     private lazy var minimalUppercaseLabel: UILabel = makeLabel(text: "Min 1 capital required.")
     // labels & inputs
-    private lazy var noDigitsLabel: UILabel = {
-        return createSubtitleLabel(text: "NO digits field")
-    }()
-    private lazy var noDigitsInput: UITextField = {
-        return createInputTextField(placeholder: "Type here")
-    }()
-    private lazy var maxLengthLabel: UILabel = {
-        return createSubtitleLabel(text: "Input limit")
-    }()
-    private lazy var maxLengthInput: UITextField = {
-        return createInputTextField(placeholder: "Type here")
-    }()
-    private lazy var onlyCharactersLabel: UILabel = {
-        return createSubtitleLabel(text: "Only characters")
-    }()
-    private lazy var onlyCharactersInput: UITextField = {
-        return createInputTextField(placeholder: "wwwww-ddddd")
-    }()
-    private lazy var urlLabel: UILabel = {
-        return createSubtitleLabel(text: "Link")
-    }()
+    private lazy var noDigitsLabel: UILabel = createSubtitleLabel(text: "NO digits field")
+    private lazy var noDigitsInput: UITextField = createInputTextField(placeholder: "Type here")
+    private lazy var maxLengthLabel: UILabel = createSubtitleLabel(text: "Input limit")
+    private lazy var maxLengthInput: UITextField = createInputTextField(placeholder: "Type here")
+    private lazy var onlyCharactersLabel: UILabel = createSubtitleLabel(text: "Only characters")
+    private lazy var onlyCharactersInput: UITextField = createInputTextField(placeholder: "wwwww-ddddd")
+    private lazy var urlLabel: UILabel = createSubtitleLabel(text: "Link")
     private lazy var urlInput: UITextField = {
         let textFieldURL = createInputTextField(placeholder: "www.example.com")
         setupUrlInputTarget(for: textFieldURL)
         return textFieldURL
     }()
-    private lazy var validationLabel: UILabel = {
-        return createSubtitleLabel(text: "Validation rules")
-    }()
+    private lazy var validationLabel: UILabel = createSubtitleLabel(text: "Validation rules")
     private lazy var validationInput: UITextField = {
         let input = createInputTextField(placeholder: "Password")
-        input.isSecureTextEntry = true // Set isSecureTextEntry
+        input.isSecureTextEntry = true
         return input
     }()
     
@@ -104,7 +88,7 @@ class MainController: UIViewController {
         label.text = text
         return label
     }
- // MARK: - Lifecycle
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -119,13 +103,13 @@ class MainController: UIViewController {
         button.setTitle("GO", for: .normal)
         button.setTitleColor(Colors.white, for: .normal)
         button.backgroundColor = Colors.systemBlue
-
+        
         urlInput.rightView = button
         urlInput.rightViewMode = .always
         button.isHidden = true
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside) // как вынести в addTarget?
     }
-
+    
     @objc private func buttonTapped() {
         guard var text = urlInput.text else {
             return
@@ -138,7 +122,7 @@ class MainController: UIViewController {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
- 
+    
     private func setupUI() {
         view.backgroundColor = .white
         maxLengthCountLabel.text = "0/10"
@@ -251,9 +235,9 @@ class MainController: UIViewController {
             make.trailing.equalTo(minimalLowercaseLabel.snp.trailing)
         }
     }
-
+    
     private func setupTapGestureRecognizer() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture)
     }
     
@@ -266,12 +250,10 @@ class MainController: UIViewController {
     }
     
     private func setupUrlInputTarget(for textField: UITextField) {
-        
-
         textField.addTarget(self, action: #selector(validateUrl), for: .editingChanged)
     }
     
-    @objc private func dismissKeyboard() {
+    @objc private func handleTap() {
         view.endEditing(true)
     }
     // validate url
@@ -285,10 +267,10 @@ class MainController: UIViewController {
         textField.layer.borderColor = isValid ? Colors.blue.cgColor : Colors.red.cgColor
         
         if isValid {
-             urlInput.rightView?.isHidden = false
-         } else {
-             urlInput.rightView?.isHidden = true
-         }
+            urlInput.rightView?.isHidden = false
+        } else {
+            urlInput.rightView?.isHidden = true
+        }
     }
 } // class
 // MARK: - textfield
@@ -323,7 +305,7 @@ extension MainController: UITextFieldDelegate {
             
         case onlyCharactersInput:
             let mask = Veil(pattern: "*****-#####")
-
+            
             guard let currentText = textField.text else {
                 return true
             }
@@ -360,9 +342,9 @@ extension MainController: UITextFieldDelegate {
             return true
         }
     }
-//     Function to update label text and color
+    //     Function to update label text and color
     private func updateLabel(_ label: UILabel, isValid: Bool, validText: String, invalidText: String) {
-//        label.text = isValid ? "✓ \(validText)" : "✕ \(invalidText)"
+        //        label.text = isValid ? "✓ \(validText)" : "✕ \(invalidText)"
         label.textColor = isValid ? .systemBlue : .red
     }
     // count => 8

@@ -10,6 +10,7 @@ import SnapKit
 import Veil
 
 class MainController: UIViewController {
+
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Text Fields"
@@ -18,32 +19,6 @@ class MainController: UIViewController {
         title.textAlignment = .center
         return title
     }()
-    private func createSubtitleLabel(text: String) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.textColor = Colors.black
-        label.textAlignment = .center
-        label.font = UIFont.systemFont(ofSize: 17)
-        return label
-    }
-    private func createInputTextField(placeholder: String) -> UITextField {
-        let input = UITextField()
-        input.borderStyle = .roundedRect
-        input.font = UIFont.systemFont(ofSize: 17)
-        input.textColor = Colors.black
-        input.backgroundColor = Colors.inputGray
-        input.layer.cornerRadius = 10
-        input.clipsToBounds = true
-        input.layer.borderWidth = 1.0
-        input.layer.borderColor = Colors.inputGray.cgColor
-        let placeholderFont = UIFont.systemFont(ofSize: 17)
-        let attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-            .foregroundColor: UIColor.lightGray,
-            .font: placeholderFont
-        ])
-        input.attributedPlaceholder = attributedPlaceholder
-        return input
-    }
     private let maxLengthCountLabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.black
@@ -51,43 +26,12 @@ class MainController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
-    private let minimalLengthLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Colors.black
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 0
-        label.text = "Min length 8 characters."
-        return label
-    }()
-    private let minimalDigitLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Colors.black
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 0
-        label.text = "Min 1 digit."
-        return label
-    }()
-    private let minimalLowercaseLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Colors.black
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 0
-        label.text = "Min 1 lowercase."
-        return label
-    }()
-    private let minimalUppercaseLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Colors.black
-        label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 0
-        label.text = "Min 1 capital required."
-        return label
-    }()
-    
+    // title for validation rules
+    private lazy var minimalLengthLabel: UILabel = makeLabel(text: "Min length 8 characters.")
+    private lazy var minimalDigitLabel: UILabel = makeLabel(text: "Min 1 digit.")
+    private lazy var minimalLowercaseLabel: UILabel = makeLabel(text: "Min 1 lowercase.")
+    private lazy var minimalUppercaseLabel: UILabel = makeLabel(text: "Min 1 capital required.")
+    // labels & inputs
     private lazy var noDigitsLabel: UILabel = {
         return createSubtitleLabel(text: "NO digits field")
     }()
@@ -122,15 +66,79 @@ class MainController: UIViewController {
         input.isSecureTextEntry = true // Set isSecureTextEntry
         return input
     }()
-
+    
+    private func createSubtitleLabel(text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.textColor = Colors.black
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }
+    
+    private func createInputTextField(placeholder: String) -> UITextField {
+        let input = UITextField()
+        input.borderStyle = .roundedRect
+        input.font = UIFont.systemFont(ofSize: 17)
+        input.textColor = Colors.black
+        input.backgroundColor = Colors.inputGray
+        input.layer.cornerRadius = 10
+        input.clipsToBounds = true
+        input.layer.borderWidth = 1.0
+        input.layer.borderColor = Colors.inputGray.cgColor
+        let placeholderFont = UIFont.systemFont(ofSize: 17)
+        let attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
+            .foregroundColor: UIColor.lightGray,
+            .font: placeholderFont
+        ])
+        input.attributedPlaceholder = attributedPlaceholder
+        return input
+    }
+    // create title for validation rules
+    private func makeLabel(text: String) -> UILabel {
+        let label = UILabel()
+        label.textColor = Colors.black
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.numberOfLines = 0
+        label.text = text
+        return label
+    }
+ // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
         setupTapGestureRecognizer()
         setupDelegates()
+        setupCustomButton()
     }
     
+    private func setupCustomButton() {
+        let button = UIButton(type: .custom)
+        button.setTitle("GO", for: .normal)
+        button.setTitleColor(Colors.white, for: .normal)
+        button.backgroundColor = Colors.systemBlue
+
+        urlInput.rightView = button
+        urlInput.rightViewMode = .always
+        button.isHidden = true
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside) // как вынести в addTarget?
+    }
+
+    @objc private func buttonTapped() {
+        guard var text = urlInput.text else {
+            return
+        }
+        // add prefix if www
+        if !text.hasPrefix("http://") && !text.hasPrefix("https://") {
+            text = "http://" + text
+        }
+        if let url = URL(string: text), UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+ 
     private func setupUI() {
         view.backgroundColor = .white
         maxLengthCountLabel.text = "0/10"
@@ -258,6 +266,8 @@ class MainController: UIViewController {
     }
     
     private func setupUrlInputTarget(for textField: UITextField) {
+        
+
         textField.addTarget(self, action: #selector(validateUrl), for: .editingChanged)
     }
     
@@ -273,19 +283,12 @@ class MainController: UIViewController {
         let urlPredicate = NSPredicate(format: "SELF MATCHES %@", urlRegex)
         let isValid = urlPredicate.evaluate(with: text)
         textField.layer.borderColor = isValid ? Colors.blue.cgColor : Colors.red.cgColor
-        // if isvalid open safari
+        
         if isValid {
-            Timer.scheduledTimer(withTimeInterval: 5, repeats: false) { _ in
-                var finalURLString = text
-                if !text.hasPrefix("http://") && !text.hasPrefix("https://") {
-                    finalURLString = "http://" + text
-                }
-                guard let url = URL(string: finalURLString) else {
-                    return
-                }
-                UIApplication.shared.open(url)
-            }
-        }
+             urlInput.rightView?.isHidden = false
+         } else {
+             urlInput.rightView?.isHidden = true
+         }
     }
 } // class
 // MARK: - textfield
@@ -348,19 +351,18 @@ extension MainController: UITextFieldDelegate {
             let containsLowercaseLetter = validatePasswordContainsLowercase(updatedText)
             let containsUppercaseLetter = validatePasswordContainsUppercase(updatedText)
             // Update the UI
-            updateLabel(minimalLengthLabel, isValid: isLengthValid, validText: "Min length 8 characters", invalidText: "Min length 8 characters")
+            updateLabel(minimalLengthLabel, isValid: isLengthValid, validText: "Min length 8 characters", invalidText: " Min length 8 characters")
             updateLabel(minimalDigitLabel, isValid: containsDigit, validText: "Min 1 digit", invalidText: "Min 1 digit")
-            updateLabel(minimalLowercaseLabel, isValid: containsLowercaseLetter, validText: "Min 1 lowercase", invalidText: "Min 1 lowercase")
-            updateLabel(minimalUppercaseLabel, isValid: containsUppercaseLetter, validText: "Min 1 uppercase", invalidText: "Min 1 uppercase")
+            updateLabel(minimalLowercaseLabel, isValid: containsLowercaseLetter, validText: " Min 1 lowercase", invalidText: " Min 1 lowercase")
+            updateLabel(minimalUppercaseLabel, isValid: containsUppercaseLetter, validText: " Min 1 uppercase", invalidText: "Min 1 uppercase")
             return true
-            
         default:
             return true
         }
     }
-    // Function to update label text and color
+//     Function to update label text and color
     private func updateLabel(_ label: UILabel, isValid: Bool, validText: String, invalidText: String) {
-        label.text = isValid ? "✓ \(validText)" : "✕ \(invalidText)"
+//        label.text = isValid ? "✓ \(validText)" : "✕ \(invalidText)"
         label.textColor = isValid ? .systemBlue : .red
     }
     // count => 8
@@ -385,3 +387,10 @@ extension MainController: UITextFieldDelegate {
     }
 } // extension
 
+
+// questions
+// 1 почему выходит ошибка когда я нажимаю на инпут
+// 2023-06-22 23:48:57.228717+0300 TextFields[7977:125417] [Query] Error for queryMetaDataSync: 2
+// 2 как упорядочить код?
+// 3 почему Veil(pattern: "*****-#####") в * вписываются и буквы и цифры
+// 4  label.text = isValid ? "✓ \(validText)" : "✕ \(invalidText)"  как вернуть на дефолтное значение если стираю текст

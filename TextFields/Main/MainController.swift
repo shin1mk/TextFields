@@ -49,7 +49,8 @@ class MainController: UIViewController {
         input.isSecureTextEntry = true
         return input
     }()
-    
+    private var validationInputBottomConstraint: Constraint?
+
     private func createSubtitleLabel(text: String) -> UILabel {
         let label = UILabel()
         label.text = text
@@ -95,6 +96,8 @@ class MainController: UIViewController {
         setupTapGestureRecognizer()
         setupDelegates()
         setupCustomButton()
+        setupKeyboardDismiss()
+           addKeyboardObserver()
     }
     // button for urlInput
     private func setupCustomButton() {
@@ -201,10 +204,13 @@ class MainController: UIViewController {
         // validation input
         self.view.addSubview(validationInput)
         validationInput.snp.makeConstraints { make in
-            make.top.equalTo(validationLabel.snp.bottom).offset(Constants.Input.topOffset)
+//            make.top.equalTo(validationLabel.snp.bottom).offset(Constants.Input.topOffset)
             make.horizontalEdges.equalToSuperview().inset(Constants.horizontalInset)
+            self.validationInputBottomConstraint = make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottomMargin).offset(Constants.Validation.bottomOffset).constraint
+
             make.height.equalTo(Constants.Input.height)
         }
+   
         // minimalLengthLabel
         self.view.addSubview(minimalLengthLabel)
         minimalLengthLabel.snp.makeConstraints { make in
@@ -375,3 +381,40 @@ extension MainController: UITextFieldDelegate {
 // 2 как упорядочить код?
 // 3 почему Veil(pattern: "*****-#####") в * вписываются и буквы и цифры
 // 4  label.text = isValid ? "✓ \(validText)" : "✕ \(invalidText)"  как вернуть на дефолтное значение если стираю текст
+
+//MARK: - Keyboard
+extension MainController {
+    private func setupKeyboardDismiss() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    private func addKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func hideKeyboard() {
+        self.view.endEditing(true)
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let keyboardHeight = keyboardSize.height
+            let spacing: CGFloat = 100
+            let bottomOffset = keyboardHeight - spacing - self.view.safeAreaInsets.bottom
+            self.validationInputBottomConstraint?.update(offset: -bottomOffset)
+            UIView.animate(withDuration: 0.3) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        self.validationInputBottomConstraint?.update(offset: -20)
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+}

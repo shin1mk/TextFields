@@ -21,6 +21,7 @@ extension MainController {
         enum Validation {
             static let topOffset = 15
             static let offset = 5
+            static let bottomOffset = -225
         }
     }
     

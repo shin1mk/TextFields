@@ -9,22 +9,22 @@ import UIKit
 
 extension MainController {
     enum Constants {
-        static let topOffset = 95
-        static let horizontalInset = 16
+        static let topOffset = 0
+        static let leading = 16
+        static let trailing = -16
+
         enum Label {
             static let topOffset = 30
         }
         enum Input {
             static let topOffset = 11
-            static let height = 30
+            static let height = 36
         }
         enum Validation {
-            static let topOffset = 15
-            static let offset = 5
-            static let bottomOffset = -225
+            static let topOffset = 10
         }
     }
-    
+
     enum Colors {
         static let black = UIColor(red: 45/255, green: 45/255, blue: 45/255, alpha: 1.0)
         static let white = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)

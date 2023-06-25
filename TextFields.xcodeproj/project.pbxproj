@@ -14,6 +14,7 @@
 		138B271C2A410DF900BD3EEA /* UIFont+CustomFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138B271B2A410DF900BD3EEA /* UIFont+CustomFonts.swift */; };
 		138B271F2A410FCC00BD3EEA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 138B271E2A410FCC00BD3EEA /* Constants.swift */; };
 		13A9799D2A4462760051861F /* Veil in Frameworks */ = {isa = PBXBuildFile; productRef = 13A9799C2A4462760051861F /* Veil */; };
+		13BFF0122A48F4FD00037487 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BFF0112A48F4FD00037487 /* PasswordValidator.swift */; };
 		13F2E8DF2A41030D008F9345 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8DE2A41030D008F9345 /* AppDelegate.swift */; };
 		13F2E8E12A41030D008F9345 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8E02A41030D008F9345 /* SceneDelegate.swift */; };
 		13F2E8E92A41030D008F9345 /* TextFields.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8E72A41030D008F9345 /* TextFields.xcdatamodeld */; };
@@ -50,6 +51,7 @@
 		138B27162A410CEB00BD3EEA /* Rubik-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Bold.ttf"; sourceTree = "<group>"; };
 		138B271B2A410DF900BD3EEA /* UIFont+CustomFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+CustomFonts.swift"; sourceTree = "<group>"; };
 		138B271E2A410FCC00BD3EEA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		13BFF0112A48F4FD00037487 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		13F2E8DB2A41030D008F9345 /* TextFields.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextFields.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13F2E8DE2A41030D008F9345 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13F2E8E02A41030D008F9345 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				138B271B2A410DF900BD3EEA /* UIFont+CustomFonts.swift */,
 				138B271E2A410FCC00BD3EEA /* Constants.swift */,
+				13BFF0112A48F4FD00037487 /* PasswordValidator.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13BFF0122A48F4FD00037487 /* PasswordValidator.swift in Sources */,
 				13F2E9152A410428008F9345 /* MainController.swift in Sources */,
 				138B271C2A410DF900BD3EEA /* UIFont+CustomFonts.swift in Sources */,
 				13F2E8DF2A41030D008F9345 /* AppDelegate.swift in Sources */,

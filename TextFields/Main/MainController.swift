@@ -253,7 +253,7 @@ extension MainController: UITextFieldDelegate {
             return true
         }
     }
-    //     Function to update label color
+    // Function to update label color
     private func updateLabel(_ label: UILabel, isValid: Bool, validText: String) {
         label.textColor = isValid ? Colors.systemBlue : .red
     }

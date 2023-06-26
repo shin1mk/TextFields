@@ -7,7 +7,6 @@
 
 import UIKit
 import SnapKit
-import Veil
 import SafariServices
 
 class MainController: UIViewController {
@@ -141,25 +140,9 @@ class MainController: UIViewController {
     @objc private func handleTap() {
         view.endEditing(true)
     }
-    // validate url
+    // validate url button GO
     private func setupUrlInput() {
         urlInput.returnKeyType = .go
-    }
-    
-    @objc private func validateUrl(_ textField: UITextField) {
-        guard let text = textField.text else {
-            return
-        }
-        let urlRegex = "^(http://)?(https://)?(www\\.)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?([a-zA-Z]{2})?$"
-        let urlPredicate = NSPredicate(format: "SELF MATCHES %@", urlRegex)
-        let isValid = urlPredicate.evaluate(with: text)
-        textField.layer.borderColor = isValid ? Colors.blue.cgColor : Colors.red.cgColor
-        
-        if isValid {
-            urlInput.rightView?.isHidden = false
-        } else {
-            urlInput.rightView?.isHidden = true
-        }
     }
     
     @objc private func buttonTapped() {
@@ -173,6 +156,63 @@ class MainController: UIViewController {
         if let url = URL(string: text) {
             let safariViewController = SFSafariViewController(url: url)
             present(safariViewController, animated: true, completion: nil)
+        }
+    }
+    
+    @objc private func validateUrl(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        // prefix
+        let urlRegex = "^(http://)?(https://)?(www\\.)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?([a-zA-Z]{2})?$"
+        let urlPredicate = NSPredicate(format: "SELF MATCHES %@", urlRegex)
+        let isValid = urlPredicate.evaluate(with: text)
+        
+        textField.layer.borderColor = isValid ? Colors.blue.cgColor : Colors.red.cgColor
+        
+        if isValid {
+            textField.rightViewMode = .always
+            
+            let domainSuffixes = [".com", ".org", ".gov", ".io", ".co", ".ua", ".ru", ".ca"]
+            var suffixFound = false
+            
+            // Проверяем наличие суффикса в списке распространенных доменных зон
+            for suffix in domainSuffixes {
+                if text.lowercased().hasSuffix(suffix) {
+                    suffixFound = true
+                    break
+                }
+            }
+            // if suffix found start counter
+            if suffixFound {
+                let countdownLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 40, height: textField.frame.height))
+                countdownLabel.font = UIFont.systemFont(ofSize: 14)
+                countdownLabel.textColor = Colors.systemBlue
+                
+                textField.rightView = countdownLabel
+                
+                var countdown = 5
+                countdownLabel.text = "\(countdown)"
+                
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                    countdown -= 1
+                    countdownLabel.text = "\(countdown)"
+                    
+                    if countdown == 0 {
+                        timer.invalidate()
+                        textField.rightView = nil
+                        
+                        var urlString = text
+                        if !urlString.lowercased().hasPrefix("http://") && !urlString.lowercased().hasPrefix("https://") {
+                            urlString = "http://" + urlString
+                        }
+                        
+                        if let url = URL(string: urlString) {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+                }
+            }
+        } else {
+            textField.rightView = nil
         }
     }
 } // class
@@ -213,17 +253,18 @@ extension MainController: UITextFieldDelegate {
             }
             return true
             
-        case onlyCharactersInput:
-            let mask = Veil(pattern: "*****-#####")
-            
-            guard let currentText = textField.text else {
-                return true
-            }
-            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
-            _ = updatedText.filter { $0.isLetter || $0.isNumber }
-            let maskedText = mask.mask(input: updatedText, exhaustive: false)
-            textField.text = maskedText
-            return false
+
+//        case onlyCharactersInput:
+//            let mask = Veil(pattern: "*****-#####")
+//
+//            guard let currentText = textField.text else {
+//                return true
+//            }
+//            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
+//            _ = updatedText.filter { $0.isLetter || $0.isNumber }
+//            let maskedText = mask.mask(input: updatedText, exhaustive: false)
+//            textField.text = maskedText
+//            return false
             
         case validationInput:
             let currentText = textField.text ?? ""

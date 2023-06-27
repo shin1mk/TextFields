@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 import SafariServices
-import JMMaskTextField
+//import JMMaskTextField
 
 class MainController: UIViewController {
     

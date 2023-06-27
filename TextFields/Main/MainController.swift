@@ -8,8 +8,11 @@
 import UIKit
 import SnapKit
 import SafariServices
+import JMMaskTextField
 
 class MainController: UIViewController {
+    
+
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Text Fields"
@@ -131,6 +134,7 @@ class MainController: UIViewController {
         onlyCharactersInput.delegate = self
         urlInput.delegate = self
         validationInput.delegate = self
+
     }
     
     private func setupUrlInputTarget(for textField: UITextField) {
@@ -252,8 +256,9 @@ extension MainController: UITextFieldDelegate {
                 maxLengthCountLabel.textColor = Colors.black
             }
             return true
+        
             
-
+            
 //        case onlyCharactersInput:
 //            let mask = Veil(pattern: "*****-#####")
 //

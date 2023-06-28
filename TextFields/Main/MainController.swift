@@ -8,6 +8,7 @@
 import UIKit
 import SnapKit
 import SafariServices
+import JMMaskTextField_Swift
 
 class MainController: UIViewController {
     private let titleLabel: UILabel = {
@@ -23,6 +24,7 @@ class MainController: UIViewController {
         label.textColor = Colors.black
         label.textAlignment = .right
         label.font = UIFont.systemFont(ofSize: 17)
+        label.text = "0/10"
         return label
     }()
     private lazy var scrollView: UIScrollView = {
@@ -47,7 +49,10 @@ class MainController: UIViewController {
     private lazy var maxLengthLabel: UILabel = createSubtitleLabel(text: "Input limit")
     private lazy var maxLengthInput: UITextField = createInputTextField(placeholder: "Type here")
     private lazy var onlyCharactersLabel: UILabel = createSubtitleLabel(text: "Only characters")
-    private lazy var onlyCharactersInput: UITextField = createInputTextField(placeholder: "wwwww-ddddd")
+    private lazy var onlyCharactersInput: UITextField = {
+        let textField = createInputTextField(placeholder: "wwwww-ddddd")
+        return textField
+    }()
     private lazy var urlLabel: UILabel = createSubtitleLabel(text: "Link")
     private lazy var urlInput: UITextField = {
         let textFieldURL = createInputTextField(placeholder: "www.example.com")
@@ -91,6 +96,7 @@ class MainController: UIViewController {
             .font: placeholderFont
         ])
         input.attributedPlaceholder = attributedPlaceholder
+        input.returnKeyType = .done
         return input
     }
     // create title for validation rules
@@ -108,16 +114,10 @@ class MainController: UIViewController {
         super.viewDidLoad()
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        setupUI()
         setupTapGestureRecognizer()
         setupDelegates()
         setupUrlInput()
         setupViewsConstraints()
-    }
-    
-    private func setupUI() {
-        view.backgroundColor = .white
-        maxLengthCountLabel.text = "0/10"
     }
     
     private func setupTapGestureRecognizer() {
@@ -132,19 +132,15 @@ class MainController: UIViewController {
         urlInput.delegate = self
         validationInput.delegate = self
     }
-    
-    private func setupUrlInputTarget(for textField: UITextField) {
-        textField.addTarget(self, action: #selector(validateUrl), for: .editingChanged)
+    //MARK: - button action
+    private func setupUrlInput() {
+        urlInput.returnKeyType = .go
     }
     
     @objc private func handleTap() {
         view.endEditing(true)
     }
-    // validate url button GO
-    private func setupUrlInput() {
-        urlInput.returnKeyType = .go
-    }
-    
+
     @objc private func buttonTapped() {
         guard var text = urlInput.text else {
             return
@@ -158,65 +154,14 @@ class MainController: UIViewController {
             present(safariViewController, animated: true, completion: nil)
         }
     }
-    
-    @objc private func validateUrl(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        // prefix
-        let urlRegex = "^(http://)?(https://)?(www\\.)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?([a-zA-Z]{2})?$"
-        let urlPredicate = NSPredicate(format: "SELF MATCHES %@", urlRegex)
-        let isValid = urlPredicate.evaluate(with: text)
-        
-        textField.layer.borderColor = isValid ? Colors.blue.cgColor : Colors.red.cgColor
-        
-        if isValid {
-            textField.rightViewMode = .always
-            
-            let domainSuffixes = [".com", ".org", ".gov", ".io", ".co", ".ua", ".ru", ".ca"]
-            var suffixFound = false
-            //if suffix has
-            for suffix in domainSuffixes {
-                if text.lowercased().hasSuffix(suffix) {
-                    suffixFound = true
-                    break
-                }
-            }
-            // if suffix found start counter
-            if suffixFound {
-                let countdownLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 40, height: textField.frame.height))
-                countdownLabel.font = UIFont.systemFont(ofSize: 14)
-                countdownLabel.textColor = Colors.systemBlue
-                
-                textField.rightView = countdownLabel
-                
-                var countdown = 5
-                countdownLabel.text = "\(countdown)"
-                
-                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-                    countdown -= 1
-                    countdownLabel.text = "\(countdown)"
-                    
-                    if countdown == 0 {
-                        timer.invalidate()
-                        textField.rightView = nil
-                        
-                        var urlString = text
-                        if !urlString.lowercased().hasPrefix("http://") && !urlString.lowercased().hasPrefix("https://") {
-                            urlString = "http://" + urlString
-                        }
-                        
-                        if let url = URL(string: urlString) {
-                            UIApplication.shared.open(url)
-                        }
-                    }
-                }
-            }
-        } else {
-            textField.rightView = nil
-        }
-    }
 } // class
-// MARK: - textfield
+// MARK: - textfields
 extension MainController: UITextFieldDelegate {
+    func setupUrlInputTarget(for textField: UITextField) {
+        textField.addTarget(self, action: #selector(validateUrl), for: .editingChanged)
+        onlyCharactersInput.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+    }
+    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.layer.borderColor = Colors.blue.cgColor
     }
@@ -228,6 +173,8 @@ extension MainController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == urlInput {
             buttonTapped()
+        } else {
+            textField.resignFirstResponder()
         }
         return true
     }
@@ -251,18 +198,28 @@ extension MainController: UITextFieldDelegate {
                 maxLengthCountLabel.textColor = Colors.black
             }
             return true
-
-//        case onlyCharactersInput:
-//            let mask = Veil(pattern: "*****-#####")
-//
-//            guard let currentText = textField.text else {
-//                return true
-//            }
-//            let updatedText = (currentText as NSString).replacingCharacters(in: range, with: string)
-//            _ = updatedText.filter { $0.isLetter || $0.isNumber }
-//            let maskedText = mask.mask(input: updatedText, exhaustive: false)
-//            textField.text = maskedText
-//            return false
+            
+        case onlyCharactersInput:
+            if string.isEmpty {
+                return true
+            }
+            let currentText = textField.text ?? ""
+            let newText = (currentText as NSString).replacingCharacters(in: range, with: string)
+            
+            if newText.count == 5 {
+                textField.text = "\(newText)-"
+                return false
+            }
+            
+            if newText.count > 5 {
+                if let firstCharacter = string.first, CharacterSet.letters.contains(firstCharacter.unicodeScalars.first!) {
+                    textField.layer.borderColor = UIColor.red.cgColor
+                    return false
+                } else {
+                    textField.layer.borderColor = UIColor.systemBlue.cgColor
+                }
+            }
+            return newText.count <= 11
             
         case validationInput:
             let currentText = textField.text ?? ""
@@ -286,7 +243,6 @@ extension MainController: UITextFieldDelegate {
             updateLabel(minimalDigitLabel, isValid: containsDigit, validText: "Min 1 digit")
             updateLabel(minimalLowercaseLabel, isValid: containsLowercase, validText: "Min 1 lowercase")
             updateLabel(minimalUppercaseLabel, isValid: containsUppercase, validText: "Min 1 uppercase")
-            
             return true
         default:
             return true
@@ -295,6 +251,54 @@ extension MainController: UITextFieldDelegate {
     // Function to update label color
     private func updateLabel(_ label: UILabel, isValid: Bool, validText: String) {
         label.textColor = isValid ? Colors.systemBlue : .red
+    }
+    
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        
+        let mask = JMStringMask(mask: "AAAAA-00000")
+        let maskedText = mask.mask(string: text)
+        textField.text = maskedText
+    }
+    
+    @objc private func validateUrl(_ textField: UITextField) {
+        guard let text = textField.text else { return }
+        // prefix
+        let urlRegex = "^(http://)?(https://)?(www\\.)?([\\w-]+\\.)+[\\w-]+(/[\\w-./?%&=]*)?([a-zA-Z]{2})?$"
+        let urlPredicate = NSPredicate(format: "SELF MATCHES %@", urlRegex)
+        let isValid = urlPredicate.evaluate(with: text)
+        
+        textField.layer.borderColor = isValid ? Colors.blue.cgColor : Colors.red.cgColor
+        
+        if isValid {
+            textField.rightViewMode = .always
+            
+            let domainSuffixes = [".com", ".org", ".gov", ".io", ".ua", ".ru"]
+            var suffixFound = false
+            //if suffix has
+            for suffix in domainSuffixes {
+                if text.lowercased().hasSuffix(suffix) {
+                    suffixFound = true
+                    break
+                }
+            }
+            // if suffix found start counter
+            if suffixFound {
+                textField.rightView = nil
+                
+                var urlString = text
+                if !urlString.lowercased().hasPrefix("http://") && !urlString.lowercased().hasPrefix("https://") {
+                    urlString = "http://" + urlString
+                }
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    if let url = URL(string: urlString) {
+                        UIApplication.shared.open(url)
+                    }
+                }
+            }
+        } else {
+            textField.rightView = nil
+        }
     }
 } // extension
 //MARK: - setup constraints
@@ -396,3 +400,4 @@ extension MainController {
         }
     }
 }
+

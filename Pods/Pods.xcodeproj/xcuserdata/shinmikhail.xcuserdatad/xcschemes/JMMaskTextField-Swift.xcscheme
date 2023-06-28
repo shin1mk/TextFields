@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E3E83FE002367B386DB0E6BA91CB2A8A"
-               BuildableName = "Pods_TextFieldsTests.framework"
-               BlueprintName = "Pods-TextFieldsTests"
+               BlueprintIdentifier = "6AD7F58830DF3D4D32A666527D4FDF8F"
+               BuildableName = "JMMaskTextField_Swift.framework"
+               BlueprintName = "JMMaskTextField-Swift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

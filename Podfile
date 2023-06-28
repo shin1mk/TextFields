@@ -4,7 +4,7 @@
 target 'TextFields' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
-  pod 'JMMaskTextField-Swift'
+
   # Pods for TextFields
   pod 'SnapKit'
   target 'TextFieldsTests' do

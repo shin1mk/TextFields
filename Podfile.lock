@@ -1,20 +1,16 @@
 PODS:
-  - JMMaskTextField-Swift (0.1.3)
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
-  - JMMaskTextField-Swift
   - SnapKit
 
 SPEC REPOS:
   trunk:
-    - JMMaskTextField-Swift
     - SnapKit
 
 SPEC CHECKSUMS:
-  JMMaskTextField-Swift: 16aa552605b121285e6c2f0817ab31cea5f4704b
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: 5f922c13ce3dc8b31221cc5039e62911bc6d1a83
+PODFILE CHECKSUM: 3fb70023373091375954fb3445ed016df55d3373
 
 COCOAPODS: 1.12.1

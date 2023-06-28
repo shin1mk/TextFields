@@ -8,11 +8,8 @@
 import UIKit
 import SnapKit
 import SafariServices
-//import JMMaskTextField
 
 class MainController: UIViewController {
-    
-
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Text Fields"
@@ -134,7 +131,6 @@ class MainController: UIViewController {
         onlyCharactersInput.delegate = self
         urlInput.delegate = self
         validationInput.delegate = self
-
     }
     
     private func setupUrlInputTarget(for textField: UITextField) {
@@ -177,8 +173,7 @@ class MainController: UIViewController {
             
             let domainSuffixes = [".com", ".org", ".gov", ".io", ".co", ".ua", ".ru", ".ca"]
             var suffixFound = false
-            
-            // Проверяем наличие суффикса в списке распространенных доменных зон
+            //if suffix has
             for suffix in domainSuffixes {
                 if text.lowercased().hasSuffix(suffix) {
                     suffixFound = true
@@ -256,9 +251,7 @@ extension MainController: UITextFieldDelegate {
                 maxLengthCountLabel.textColor = Colors.black
             }
             return true
-        
-            
-            
+
 //        case onlyCharactersInput:
 //            let mask = Veil(pattern: "*****-#####")
 //

@@ -7,7 +7,6 @@
 
 import UIKit
 
-extension MainController {
     enum Constants {
         static let topOffset = 0
         static let leading = 16
@@ -35,4 +34,3 @@ extension MainController {
         static let blue = UIColor(red: 0/255, green: 122/255, blue: 255/255, alpha: 1.0)
         static let systemBlue = UIColor.systemBlue
     }
-}

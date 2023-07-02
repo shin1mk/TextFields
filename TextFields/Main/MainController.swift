@@ -11,6 +11,7 @@ import SafariServices
 import JMMaskTextField_Swift
 
 class MainController: UIViewController {
+    // MARK: - private let
     private let titleLabel: UILabel = {
         let title = UILabel()
         title.text = "Text Fields"
@@ -43,44 +44,16 @@ class MainController: UIViewController {
     private var contentSize: CGSize {
         CGSize(width: view.frame.width, height: view.frame.height + 100)
     }
-    // labels & inputs
-    private lazy var noDigitsLabel: UILabel = createSubtitleLabel(text: "NO digits field")
-    private lazy var noDigitsInput: UITextField = createInputTextField(placeholder: "Type here")
-    private lazy var maxLengthLabel: UILabel = createSubtitleLabel(text: "Input limit")
-    private lazy var maxLengthInput: UITextField = createInputTextField(placeholder: "Type here")
-    private lazy var onlyCharactersLabel: UILabel = createSubtitleLabel(text: "Only characters")
-    private lazy var onlyCharactersInput: UITextField = {
-        let textField = createInputTextField(placeholder: "wwwww-ddddd")
-        return textField
-    }()
-    private lazy var urlLabel: UILabel = createSubtitleLabel(text: "Link")
-    private lazy var urlInput: UITextField = {
-        let textFieldURL = createInputTextField(placeholder: "www.example.com")
-        setupUrlInputTarget(for: textFieldURL)
-        return textFieldURL
-    }()
-    private lazy var validationLabel: UILabel = createSubtitleLabel(text: "Validation rules")
-    private lazy var validationInput: UITextField = {
-        let input = createInputTextField(placeholder: "Password")
-        input.isSecureTextEntry = true
-        return input
-    }()
-    // title for validation rules
-    private lazy var minimalLengthLabel: UILabel = makeLabel(text: "Min length 8 characters.")
-    private lazy var minimalDigitLabel: UILabel = makeLabel(text: "Min 1 digit.")
-    private lazy var minimalLowercaseLabel: UILabel = makeLabel(text: "Min 1 lowercase.")
-    private lazy var minimalUppercaseLabel: UILabel = makeLabel(text: "Min 1 capital required.")
-    
-    private func createSubtitleLabel(text: String) -> UILabel {
+    // no digits
+    private let noDigitsLabel: UILabel = {
         let label = UILabel()
-        label.text = text
+        label.text = "NO digits field"
         label.textColor = Colors.black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 17)
         return label
-    }
-    
-    private func createInputTextField(placeholder: String) -> UITextField {
+    }()
+    private let noDigitsInput: UITextField = {
         let input = UITextField()
         input.borderStyle = .roundedRect
         input.font = UIFont.systemFont(ofSize: 17)
@@ -90,25 +63,167 @@ class MainController: UIViewController {
         input.clipsToBounds = true
         input.layer.borderWidth = 1.0
         input.layer.borderColor = Colors.inputGray.cgColor
+        let placeholderText = "Type here"
         let placeholderFont = UIFont.systemFont(ofSize: 17)
-        let attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [
-            .foregroundColor: UIColor.lightGray,
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [
+            .foregroundColor: Colors.gray,
             .font: placeholderFont
         ])
         input.attributedPlaceholder = attributedPlaceholder
         input.returnKeyType = .done
         return input
-    }
-    // create title for validation rules
-    private func makeLabel(text: String) -> UILabel {
+    }()
+    // max Length
+    private let maxLengthLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Input limit"
+        label.textColor = Colors.black
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
+    private let maxLengthInput: UITextField = {
+        let input = UITextField()
+        input.borderStyle = .roundedRect
+        input.font = UIFont.systemFont(ofSize: 17)
+        input.textColor = Colors.black
+        input.backgroundColor = Colors.inputGray
+        input.layer.cornerRadius = 10
+        input.clipsToBounds = true
+        input.layer.borderWidth = 1.0
+        input.layer.borderColor = Colors.inputGray.cgColor
+        let placeholderText = "Type here"
+        let placeholderFont = UIFont.systemFont(ofSize: 17)
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [
+            .foregroundColor: Colors.gray,
+            .font: placeholderFont
+        ])
+        input.attributedPlaceholder = attributedPlaceholder
+        input.returnKeyType = .done
+        return input
+    }()
+    // only Characters
+    private let onlyCharactersLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Only characters"
+        label.textColor = Colors.black
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
+    private let onlyCharactersInput: UITextField = {
+        let input = UITextField()
+        input.borderStyle = .roundedRect
+        input.font = UIFont.systemFont(ofSize: 17)
+        input.textColor = Colors.black
+        input.backgroundColor = Colors.inputGray
+        input.layer.cornerRadius = 10
+        input.clipsToBounds = true
+        input.layer.borderWidth = 1.0
+        input.layer.borderColor = Colors.inputGray.cgColor
+        let placeholderText = "wwwww-ddddd"
+        let placeholderFont = UIFont.systemFont(ofSize: 17)
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [
+            .foregroundColor: Colors.gray,
+            .font: placeholderFont
+        ])
+        input.attributedPlaceholder = attributedPlaceholder
+        input.returnKeyType = .done
+        return input
+    }()
+    // url
+    private let urlLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Link"
+        label.textColor = Colors.black
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
+    private let urlInput: UITextField = {
+        let input = UITextField()
+        input.borderStyle = .roundedRect
+        input.font = UIFont.systemFont(ofSize: 17)
+        input.textColor = Colors.black
+        input.backgroundColor = Colors.inputGray
+        input.layer.cornerRadius = 10
+        input.clipsToBounds = true
+        input.layer.borderWidth = 1.0
+        input.layer.borderColor = Colors.inputGray.cgColor
+        let placeholderText = "www.example.com"
+        let placeholderFont = UIFont.systemFont(ofSize: 17)
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [
+            .foregroundColor: Colors.gray,
+            .font: placeholderFont
+        ])
+        input.attributedPlaceholder = attributedPlaceholder
+        input.returnKeyType = .done
+        return input
+    }()
+    // validation
+    private let validationLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Validation rules"
+        label.textColor = Colors.black
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 17)
+        return label
+    }()
+    private let validationInput: UITextField = {
+        let input = UITextField()
+        input.borderStyle = .roundedRect
+        input.font = UIFont.systemFont(ofSize: 17)
+        input.textColor = Colors.black
+        input.backgroundColor = Colors.inputGray
+        input.layer.cornerRadius = 10
+        input.clipsToBounds = true
+        input.layer.borderWidth = 1.0
+        input.layer.borderColor = Colors.inputGray.cgColor
+        let placeholderText = "Password"
+        let placeholderFont = UIFont.systemFont(ofSize: 17)
+        let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [
+            .foregroundColor: Colors.gray,
+            .font: placeholderFont
+        ])
+        input.attributedPlaceholder = attributedPlaceholder
+        input.returnKeyType = .done
+        input.isSecureTextEntry = true
+        return input
+    }()
+    
+    // MARK: - rules
+    private let minimalLengthLabel: UILabel = {
         let label = UILabel()
         label.textColor = Colors.black
         label.textAlignment = .left
         label.font = UIFont.systemFont(ofSize: 12)
-        label.numberOfLines = 0
-        label.text = text
+        label.text = "Min length 8 characters."
         return label
-    }
+    }()
+    private let minimalDigitLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.black
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "Min 1 digit."
+        return label
+    }()
+    private let minimalLowercaseLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.black
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "Min 1 lowercase."
+        return label
+    }()
+    private let minimalUppercaseLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.black
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 12)
+        label.text = "Min 1 capital required."
+        return label
+    }()
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -157,10 +272,6 @@ class MainController: UIViewController {
 } // class
 // MARK: - textfields
 extension MainController: UITextFieldDelegate {
-    func setupUrlInputTarget(for textField: UITextField) {
-        textField.addTarget(self, action: #selector(validateUrl), for: .editingChanged)
-        onlyCharactersInput.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.layer.borderColor = Colors.blue.cgColor
@@ -251,14 +362,6 @@ extension MainController: UITextFieldDelegate {
     // Function to update label color
     private func updateLabel(_ label: UILabel, isValid: Bool, validText: String) {
         label.textColor = isValid ? Colors.systemBlue : .red
-    }
-    
-    @objc func textFieldDidChange(_ textField: UITextField) {
-        guard let text = textField.text else { return }
-        
-        let mask = JMStringMask(mask: "AAAAA-00000")
-        let maskedText = mask.mask(string: text)
-        textField.text = maskedText
     }
     
     @objc private func validateUrl(_ textField: UITextField) {

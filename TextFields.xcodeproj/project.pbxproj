@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		135E0F7C2A516FC400098603 /* NoDigitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 135E0F7B2A516FC400098603 /* NoDigitsView.swift */; };
 		138B27172A410CEB00BD3EEA /* Rubik-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 138B27142A410CEB00BD3EEA /* Rubik-Medium.ttf */; };
 		138B27182A410CEB00BD3EEA /* Rubik-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 138B27152A410CEB00BD3EEA /* Rubik-Regular.ttf */; };
 		138B27192A410CEB00BD3EEA /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 138B27162A410CEB00BD3EEA /* Rubik-Bold.ttf */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		135E0F7B2A516FC400098603 /* NoDigitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDigitsView.swift; sourceTree = "<group>"; };
 		138B27142A410CEB00BD3EEA /* Rubik-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Medium.ttf"; sourceTree = "<group>"; };
 		138B27152A410CEB00BD3EEA /* Rubik-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Regular.ttf"; sourceTree = "<group>"; };
 		138B27162A410CEB00BD3EEA /* Rubik-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Rubik-Bold.ttf"; sourceTree = "<group>"; };
@@ -113,6 +115,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		135E0F7A2A516F9600098603 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				135E0F7B2A516FC400098603 /* NoDigitsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		138B270D2A410CAC00BD3EEA /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +136,7 @@
 		138B271A2A410DDD00BD3EEA /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				135E0F7A2A516F9600098603 /* Views */,
 				138B271D2A410FBB00BD3EEA /* Extension */,
 			);
 			path = Core;
@@ -475,6 +486,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13BFF0122A48F4FD00037487 /* PasswordValidator.swift in Sources */,
+				135E0F7C2A516FC400098603 /* NoDigitsView.swift in Sources */,
 				13F2E9152A410428008F9345 /* MainController.swift in Sources */,
 				138B271C2A410DF900BD3EEA /* UIFont+CustomFonts.swift in Sources */,
 				13F2E8DF2A41030D008F9345 /* AppDelegate.swift in Sources */,

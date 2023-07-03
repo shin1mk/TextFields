@@ -1,24 +1,26 @@
 //
-//  NoDigitsView.swift
+//  OnlyCharactersView.swift
 //  TextFields
 //
-//  Created by SHIN MIKHAIL on 02.07.2023.
+//  Created by SHIN MIKHAIL on 04.07.2023.
 //
 
 import UIKit
 import SnapKit
+import JMMaskTextField_Swift
 
-final class NoDigitsView: UIView {
-    private let noDigitsLabel: UILabel = {
+final class OnlyCharactersView: UIView {
+    private let onlyCharactersLabel: UILabel = {
         let label = UILabel()
-        label.text = "NO digits field"
+        label.text = "Only characters"
         label.textColor = Colors.black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
-    private let noDigitsInput: UITextField = {
-        let input = UITextField()
+    private let onlyCharactersInput: JMMaskTextField = {
+        let input = JMMaskTextField()
+        input.maskString = "AAAAA-00000"
         input.borderStyle = .roundedRect
         input.font = UIFont.systemFont(ofSize: 17)
         input.textColor = Colors.black
@@ -27,7 +29,7 @@ final class NoDigitsView: UIView {
         input.clipsToBounds = true
         input.layer.borderWidth = 1.0
         input.layer.borderColor = Colors.inputGray.cgColor
-        let placeholderText = "Type here"
+        let placeholderText = "wwwww-ddddd"
         let placeholderFont = UIFont.systemFont(ofSize: 17)
         let attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: [
             .foregroundColor: Colors.gray,
@@ -50,40 +52,39 @@ final class NoDigitsView: UIView {
     }
     
     private func setupTextFieldDelegate() {
-        noDigitsInput.delegate = self
+        onlyCharactersInput.delegate = self
     }
     
     private func setupConstraints() {
-        addSubview(noDigitsLabel)
-        noDigitsLabel.snp.makeConstraints { make in
+        addSubview(onlyCharactersLabel)
+        onlyCharactersLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(0)
         }
-        addSubview(noDigitsInput)
-        noDigitsInput.snp.makeConstraints { make in
-            make.top.equalTo(noDigitsLabel.snp.bottom).offset(Constants.Input.topOffset)
+        addSubview(onlyCharactersInput)
+        onlyCharactersInput.snp.makeConstraints { make in
+            make.top.equalTo(onlyCharactersLabel.snp.bottom).offset(Constants.Input.topOffset)
             make.edges.equalToSuperview().offset(0);
             make.height.equalTo(Constants.Input.height)
         }
     }
 }
-extension NoDigitsView: UITextFieldDelegate {
+
+extension OnlyCharactersView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField == noDigitsInput else {
-            return true
-        }
         
-        let characterSet = CharacterSet.decimalDigits
-        let containsDigits = string.rangeOfCharacter(from: characterSet) != nil
+        guard let text = textField.text as NSString? else { return true }
+        let newText = text.replacingCharacters(in: range, with: string)
         
-        if containsDigits {
-            textField.layer.borderColor = UIColor.red.cgColor
-            return false
+        let maskTextField = textField as! JMMaskTextField
+        guard let unmaskedText = maskTextField.stringMask?.unmask(string: newText) else { return true }
+        
+        if unmaskedText.count >= 11 {
+            maskTextField.maskString = "AAAAA-00000"
         } else {
-            textField.layer.borderColor = Colors.systemBlue.cgColor
-            return true
+            maskTextField.maskString = "AAAAA-00000"
         }
+        return true
     }
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         textField.layer.borderColor = Colors.blue.cgColor
     }
@@ -91,4 +92,6 @@ extension NoDigitsView: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderColor = Colors.inputGray.cgColor
     }
+    
 }
+

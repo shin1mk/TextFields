@@ -3,4 +3,54 @@
    uuid = "A7D3D99B-9927-493E-A2A1-A7E5D483F614"
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4AA692DE-C06D-4D39-BBAA-908F3AA4762E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "TextFields/Core/Views/MaxLengthView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "textField(_:shouldChangeCharactersIn:replacementString:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "4AA692DE-C06D-4D39-BBAA-908F3AA4762E - 79361205d28d5d8e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TextFields.MaxLengthView.textField(_: __C.UITextField, shouldChangeCharactersIn: __C._NSRange, replacementString: Swift.String) -&gt; Swift.Bool"
+                  moduleName = "TextFields"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shinmikhail/Swift/Course/Task2/TextFields/TextFields/Core/Views/MaxLengthView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "304">
+               </Location>
+               <Location
+                  uuid = "4AA692DE-C06D-4D39-BBAA-908F3AA4762E - 79361205d28d5d8e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "TextFields.MaxLengthView.textField(_: __C.UITextField, shouldChangeCharactersIn: __C._NSRange, replacementString: Swift.String) -&gt; Swift.Bool"
+                  moduleName = "TextFields"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/shinmikhail/Swift/Course/Task2/TextFields/TextFields/Core/Views/MaxLengthView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "88"
+                  endingLineNumber = "88"
+                  offsetFromSymbolStart = "416">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

@@ -9,11 +9,12 @@ import UIKit
 
     enum Constants {
         static let topOffset = 0
+        static let bottomOffset: CGFloat = (400)
         static let leading = 16
         static let trailing = -16
 
         enum Label {
-            static let topOffset = 30
+            static let topOffset = 60
         }
         enum Input {
             static let topOffset = 11

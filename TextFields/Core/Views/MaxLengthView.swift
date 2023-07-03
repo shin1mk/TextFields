@@ -1,23 +1,23 @@
 //
-//  NoDigitsView.swift
+//  MaxLengthView.swift
 //  TextFields
 //
-//  Created by SHIN MIKHAIL on 02.07.2023.
+//  Created by SHIN MIKHAIL on 03.07.2023.
 //
 
 import UIKit
 import SnapKit
 
-final class NoDigitsView: UIView {
-    private let noDigitsLabel: UILabel = {
+final class MaxLengthView: UIView {
+    private let maxLengthLabel: UILabel = {
         let label = UILabel()
-        label.text = "NO digits field"
+        label.text = "Input limit"
         label.textColor = Colors.black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 17)
         return label
     }()
-    private let noDigitsInput: UITextField = {
+    private let maxLengthInput: UITextField = {
         let input = UITextField()
         input.borderStyle = .roundedRect
         input.font = UIFont.systemFont(ofSize: 17)
@@ -37,6 +37,14 @@ final class NoDigitsView: UIView {
         input.returnKeyType = .done
         return input
     }()
+    private let maxLengthCountLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Colors.black
+        label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 17)
+        label.text = "0/10"
+        return label
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -50,42 +58,47 @@ final class NoDigitsView: UIView {
     }
     
     private func setupTextFieldDelegate() {
-        noDigitsInput.delegate = self
+        maxLengthInput.delegate = self
     }
     
     private func setupConstraints() {
-        addSubview(noDigitsLabel)
-        noDigitsLabel.snp.makeConstraints { make in
+        addSubview(maxLengthLabel)
+        maxLengthLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(0)
         }
-        addSubview(noDigitsInput)
-        noDigitsInput.snp.makeConstraints { make in
-            make.top.equalTo(noDigitsLabel.snp.bottom).offset(Constants.Input.topOffset)
-            make.edges.equalToSuperview().offset(0);
+        addSubview(maxLengthInput)
+        maxLengthInput.snp.makeConstraints { make in
+            make.top.equalTo(maxLengthLabel.snp.bottom).offset(Constants.Input.topOffset)
+            make.edges.equalToSuperview().offset(0)
             make.height.equalTo(Constants.Input.height)
+        }
+        addSubview(maxLengthCountLabel)
+        maxLengthCountLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(0)
+            make.centerY.equalTo(maxLengthLabel.snp.centerY)
         }
     }
 }
-extension NoDigitsView: UITextFieldDelegate {
+
+extension MaxLengthView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField == noDigitsInput else {
-            return true
-        }
-        
-        let characterSet = CharacterSet.decimalDigits
-        let containsDigits = string.rangeOfCharacter(from: characterSet) != nil
-        
-        if containsDigits {
-            textField.layer.borderColor = UIColor.red.cgColor
+        guard let text = textField.text else { return true }
+        let newLength = text.count + string.count - range.length
+        if newLength > 10 {
+            textField.layer.borderColor = Colors.red.cgColor
+            maxLengthCountLabel.textColor = Colors.red
             return false
         } else {
             textField.layer.borderColor = Colors.systemBlue.cgColor
-            return true
+            maxLengthCountLabel.textColor = Colors.black
         }
+        maxLengthCountLabel.text = "\(newLength)/10"
+
+        return true
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        textField.layer.borderColor = Colors.blue.cgColor
+        textField.layer.borderColor = Colors.systemBlue.cgColor
     }
     
     func textFieldDidEndEditing(_ textField: UITextField) {

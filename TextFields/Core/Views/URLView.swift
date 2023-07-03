@@ -39,7 +39,7 @@ final class URLView: UIView {
         return input
     }()
     private var buttonTappedHandler: ((String) -> Void)?
-
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupConstraints()
@@ -85,13 +85,19 @@ final class URLView: UIView {
         }
         // add prefix if www
         if !text.hasPrefix("http://") && !text.hasPrefix("https://") {
-            text = "http://" + text
+            text = "https://" + text
         }
-        buttonTappedHandler?(text)
-    }
-    
-    func setButtonTappedHandler(_ handler: @escaping (String) -> Void) {
-        buttonTappedHandler = handler
+        if let url = URL(string: text) {
+            let safariViewController = SFSafariViewController(url: url)
+            
+            if let windowScene = UIApplication.shared.connectedScenes
+                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                
+                if let keyWindow = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                    keyWindow.rootViewController?.present(safariViewController, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     @objc private func validateUrl(_ textField: UITextField) {
@@ -121,7 +127,7 @@ final class URLView: UIView {
                 
                 var urlString = text
                 if !urlString.lowercased().hasPrefix("http://") && !urlString.lowercased().hasPrefix("https://") {
-                    urlString = "http://" + urlString
+                    urlString = "https://" + urlString
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                     if let url = URL(string: urlString) {
@@ -145,4 +151,5 @@ extension URLView: UITextFieldDelegate {
             return true
         }
     }
+    
 }

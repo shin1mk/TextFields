@@ -179,6 +179,7 @@ final class MainController: UIViewController {
     private func setupDelegates() {
         validationInput.delegate = self
     }
+    
 } // class
 // MARK: - textfields
 extension MainController: UITextFieldDelegate {

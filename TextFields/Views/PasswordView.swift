@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class PasswordView: UIView {
+    //MARK: UI Elements
     private let validationLabel: UILabel = {
         let label = UILabel()
         label.text = "Validation rules"
@@ -70,7 +71,7 @@ final class PasswordView: UIView {
         label.text = "Min 1 capital required."
         return label
     }()
-    
+    //MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupConstraints()
@@ -81,45 +82,53 @@ final class PasswordView: UIView {
         super.init(coder: aDecoder)
         return nil
     }
-    
+    //MARK: Methods
     private func setupTextFieldDelegate() {
-                validationInput.delegate = self
+        validationInput.delegate = self
     }
     
     private func setupConstraints() {
         addSubview(validationLabel)
         validationLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(0)
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(validationInput)
         validationInput.snp.makeConstraints { make in
             make.top.equalTo(validationLabel.snp.bottom).offset(Constants.Input.topOffset)
-            make.edges.equalToSuperview().offset(0);
+            make.horizontalEdges.bottom.equalToSuperview()
             make.height.equalTo(Constants.Input.height)
         }
         // validation rules
         addSubview(minimalLengthLabel)
         minimalLengthLabel.snp.makeConstraints { make in
             make.top.equalTo(validationInput.snp.bottom).offset(Constants.Validation.topOffset)
-            make.leading.equalToSuperview().offset(0)
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(minimalDigitLabel)
         minimalDigitLabel.snp.makeConstraints { make in
             make.top.equalTo(minimalLengthLabel.snp.bottom).offset(Constants.Validation.topOffset)
-            make.leading.equalToSuperview().offset(0)
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(minimalLowercaseLabel)
         minimalLowercaseLabel.snp.makeConstraints { make in
             make.top.equalTo(minimalDigitLabel.snp.bottom).offset(Constants.Validation.topOffset)
-            make.leading.equalToSuperview().offset(0)
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(minimalUppercaseLabel)
         minimalUppercaseLabel.snp.makeConstraints { make in
             make.top.equalTo(minimalLowercaseLabel.snp.bottom).offset(Constants.Validation.topOffset)
-            make.leading.equalToSuperview().offset(0)
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
+            // bottom ?
         }
     }
 }
+//MARK: - UITextFieldDelegate
 
 extension PasswordView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -146,6 +155,7 @@ extension PasswordView: UITextFieldDelegate {
         updateLabel(minimalUppercaseLabel, isValid: containsUppercase, validText: "Min 1 uppercase")
         return true
     }
+    
     private func updateLabel(_ label: UILabel, isValid: Bool, validText: String) {
         label.textColor = isValid ? Colors.systemBlue : .red
     }

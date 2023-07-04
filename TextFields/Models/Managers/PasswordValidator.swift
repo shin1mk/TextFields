@@ -5,10 +5,9 @@
 //  Created by SHIN MIKHAIL on 26.06.2023.
 //
 
-import UIKit
 import Foundation
 
-struct PasswordValidator {
+class PasswordValidator {
     static func validatePasswordLength(_ password: String) -> Bool {
         let isPasswordValid = password.count >= 8
         return isPasswordValid

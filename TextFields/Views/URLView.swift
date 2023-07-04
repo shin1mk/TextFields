@@ -10,6 +10,7 @@ import SnapKit
 import SafariServices
 
 final class URLView: UIView {
+    //MARK: UI Elements
     private let urlLabel: UILabel = {
         let label = UILabel()
         label.text = "Link"
@@ -38,7 +39,7 @@ final class URLView: UIView {
         input.returnKeyType = .go
         return input
     }()
-    
+    //MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupConstraints()
@@ -50,7 +51,7 @@ final class URLView: UIView {
         super.init(coder: aDecoder)
         return nil
     }
-    
+    //MARK: Methods
     private func setupTextFieldDelegate() {
         urlInput.delegate = self
     }
@@ -62,17 +63,19 @@ final class URLView: UIView {
     private func setupConstraints() {
         addSubview(urlLabel)
         urlLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(0)
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(urlInput)
         urlInput.snp.makeConstraints { make in
             make.top.equalTo(urlLabel.snp.bottom).offset(Constants.Input.topOffset)
-            make.edges.equalToSuperview().offset(0);
+            make.horizontalEdges.bottom.equalToSuperview()
             make.height.equalTo(Constants.Input.height)
         }
     }
     
-    @objc private func buttonTapped() {
+    private func buttonTapped() {
         guard var text = urlInput.text else {
             return
         }
@@ -133,16 +136,11 @@ final class URLView: UIView {
         }
     }
 }
-
+//MARK: - UITextFieldDelegate
 extension URLView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == urlInput {
-            buttonTapped()
-            return false
-        } else {
-            textField.resignFirstResponder()
-            return true
-        }
+        buttonTapped()
+        return false
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {

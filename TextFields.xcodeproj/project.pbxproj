@@ -17,7 +17,7 @@
 		13AF4F322A53563300763066 /* MaxLengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AF4F312A53563300763066 /* MaxLengthView.swift */; };
 		13AF4F342A536F3D00763066 /* OnlyCharactersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AF4F332A536F3D00763066 /* OnlyCharactersView.swift */; };
 		13AF4F362A53805B00763066 /* URLView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13AF4F352A53805B00763066 /* URLView.swift */; };
-		13BFF0122A48F4FD00037487 /* PasswordRulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BFF0112A48F4FD00037487 /* PasswordRulesView.swift */; };
+		13BFF0122A48F4FD00037487 /* PasswordValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13BFF0112A48F4FD00037487 /* PasswordValidator.swift */; };
 		13F2E8DF2A41030D008F9345 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8DE2A41030D008F9345 /* AppDelegate.swift */; };
 		13F2E8E12A41030D008F9345 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8E02A41030D008F9345 /* SceneDelegate.swift */; };
 		13F2E8E92A41030D008F9345 /* TextFields.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 13F2E8E72A41030D008F9345 /* TextFields.xcdatamodeld */; };
@@ -60,7 +60,7 @@
 		13AF4F312A53563300763066 /* MaxLengthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaxLengthView.swift; sourceTree = "<group>"; };
 		13AF4F332A536F3D00763066 /* OnlyCharactersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlyCharactersView.swift; sourceTree = "<group>"; };
 		13AF4F352A53805B00763066 /* URLView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLView.swift; sourceTree = "<group>"; };
-		13BFF0112A48F4FD00037487 /* PasswordRulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordRulesView.swift; sourceTree = "<group>"; };
+		13BFF0112A48F4FD00037487 /* PasswordValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordValidator.swift; sourceTree = "<group>"; };
 		13F2E8DB2A41030D008F9345 /* TextFields.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TextFields.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13F2E8DE2A41030D008F9345 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		13F2E8E02A41030D008F9345 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -123,19 +123,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		135E0F7A2A516F9600098603 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				135E0F7B2A516FC400098603 /* NoDigitsView.swift */,
-				13AF4F312A53563300763066 /* MaxLengthView.swift */,
-				13AF4F332A536F3D00763066 /* OnlyCharactersView.swift */,
-				13AF4F352A53805B00763066 /* URLView.swift */,
-				13871CA92A5408A50040C830 /* PasswordView.swift */,
-				13BFF0112A48F4FD00037487 /* PasswordRulesView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		138B270D2A410CAC00BD3EEA /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,15 +133,6 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
-		138B271A2A410DDD00BD3EEA /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				135E0F7A2A516F9600098603 /* Views */,
-				138B271D2A410FBB00BD3EEA /* Extension */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
 		138B271D2A410FBB00BD3EEA /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,6 +140,42 @@
 				138B271E2A410FCC00BD3EEA /* Constants.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		13B3A9782A549F2800E09C7E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				13B3A97B2A54A00300E09C7E /* Managers */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		13B3A9792A549F3A00E09C7E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				135E0F7B2A516FC400098603 /* NoDigitsView.swift */,
+				13AF4F312A53563300763066 /* MaxLengthView.swift */,
+				13AF4F332A536F3D00763066 /* OnlyCharactersView.swift */,
+				13AF4F352A53805B00763066 /* URLView.swift */,
+				13871CA92A5408A50040C830 /* PasswordView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		13B3A97A2A549F4400E09C7E /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				13F2E9142A410428008F9345 /* MainController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		13B3A97B2A54A00300E09C7E /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				13BFF0112A48F4FD00037487 /* PasswordValidator.swift */,
+			);
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		13F2E8D22A41030D008F9345 = {
@@ -189,8 +203,10 @@
 		13F2E8DD2A41030D008F9345 /* TextFields */ = {
 			isa = PBXGroup;
 			children = (
-				138B271A2A410DDD00BD3EEA /* Core */,
-				13F2E9132A410405008F9345 /* Main */,
+				138B271D2A410FBB00BD3EEA /* Extension */,
+				13B3A97A2A549F4400E09C7E /* Controller */,
+				13B3A9792A549F3A00E09C7E /* Views */,
+				13B3A9782A549F2800E09C7E /* Models */,
 				13F2E9112A410355008F9345 /* Application */,
 				13F2E9122A410380008F9345 /* Resources */,
 			);
@@ -233,14 +249,6 @@
 				13F2E8E72A41030D008F9345 /* TextFields.xcdatamodeld */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		13F2E9132A410405008F9345 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				13F2E9142A410428008F9345 /* MainController.swift */,
-			);
-			path = Main;
 			sourceTree = "<group>";
 		};
 		53A15E4F0174D0E287236CEE /* Pods */ = {
@@ -498,7 +506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13871CAA2A5408A50040C830 /* PasswordView.swift in Sources */,
-				13BFF0122A48F4FD00037487 /* PasswordRulesView.swift in Sources */,
+				13BFF0122A48F4FD00037487 /* PasswordValidator.swift in Sources */,
 				135E0F7C2A516FC400098603 /* NoDigitsView.swift in Sources */,
 				13F2E9152A410428008F9345 /* MainController.swift in Sources */,
 				138B271C2A410DF900BD3EEA /* UIFont+CustomFonts.swift in Sources */,

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class NoDigitsView: UIView {
+    //MARK: UI Elements
     private let noDigitsLabel: UILabel = {
         let label = UILabel()
         label.text = "NO digits field"
@@ -37,7 +38,7 @@ final class NoDigitsView: UIView {
         input.returnKeyType = .done
         return input
     }()
-    
+    //MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupConstraints()
@@ -48,7 +49,7 @@ final class NoDigitsView: UIView {
         super.init(coder: aDecoder)
         return nil
     }
-    
+    //MARK: Methods
     private func setupTextFieldDelegate() {
         noDigitsInput.delegate = self
     }
@@ -56,23 +57,21 @@ final class NoDigitsView: UIView {
     private func setupConstraints() {
         addSubview(noDigitsLabel)
         noDigitsLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(0)
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(noDigitsInput)
         noDigitsInput.snp.makeConstraints { make in
             make.top.equalTo(noDigitsLabel.snp.bottom).offset(Constants.Input.topOffset)
-            make.edges.equalToSuperview().offset(0);
+            make.horizontalEdges.bottom.equalToSuperview()
             make.height.equalTo(Constants.Input.height)
         }
     }
 }
-
+//MARK: - UITextFieldDelegate
 extension NoDigitsView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard textField == noDigitsInput else {
-            return true
-        }
-        
         let characterSet = CharacterSet.decimalDigits
         let containsDigits = string.rangeOfCharacter(from: characterSet) != nil
         

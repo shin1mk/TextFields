@@ -10,6 +10,7 @@ import SnapKit
 import JMMaskTextField_Swift
 
 final class OnlyCharactersView: UIView {
+    //MARK: UI Elements
     private let onlyCharactersLabel: UILabel = {
         let label = UILabel()
         label.text = "Only characters"
@@ -39,7 +40,7 @@ final class OnlyCharactersView: UIView {
         input.returnKeyType = .done
         return input
     }()
-    
+    //MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupConstraints()
@@ -50,7 +51,7 @@ final class OnlyCharactersView: UIView {
         super.init(coder: aDecoder)
         return nil
     }
-    
+    //MARK: Methods
     private func setupTextFieldDelegate() {
         onlyCharactersInput.delegate = self
     }
@@ -58,17 +59,19 @@ final class OnlyCharactersView: UIView {
     private func setupConstraints() {
         addSubview(onlyCharactersLabel)
         onlyCharactersLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(0)
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(onlyCharactersInput)
         onlyCharactersInput.snp.makeConstraints { make in
             make.top.equalTo(onlyCharactersLabel.snp.bottom).offset(Constants.Input.topOffset)
-            make.edges.equalToSuperview().offset(0);
+            make.horizontalEdges.bottom.equalToSuperview()
             make.height.equalTo(Constants.Input.height)
         }
     }
 }
-
+//MARK: - UITextFieldDelegate
 extension OnlyCharactersView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
@@ -76,13 +79,10 @@ extension OnlyCharactersView: UITextFieldDelegate {
         let newText = text.replacingCharacters(in: range, with: string)
         
         let maskTextField = textField as! JMMaskTextField
-        guard let unmaskedText = maskTextField.stringMask?.unmask(string: newText) else { return true }
+        guard (maskTextField.stringMask?.unmask(string: newText)) != nil else { return true }
         
-        if unmaskedText.count >= 11 {
-            maskTextField.maskString = "AAAAA-00000"
-        } else {
-            maskTextField.maskString = "AAAAA-00000"
-        }
+        maskTextField.maskString = "AAAAA-00000"
+        
         return true
     }
     func textFieldDidBeginEditing(_ textField: UITextField) {

@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 
 final class MaxLengthView: UIView {
+    //MARK: UI Elements
     private let maxLengthLabel: UILabel = {
         let label = UILabel()
         label.text = "Input limit"
@@ -45,7 +46,7 @@ final class MaxLengthView: UIView {
         label.text = "0/10"
         return label
     }()
-    
+    //MARK: Initialization
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupConstraints()
@@ -56,7 +57,7 @@ final class MaxLengthView: UIView {
         super.init(coder: aDecoder)
         return nil
     }
-    
+    //MARK: Methods
     private func setupTextFieldDelegate() {
         maxLengthInput.delegate = self
     }
@@ -64,25 +65,27 @@ final class MaxLengthView: UIView {
     private func setupConstraints() {
         addSubview(maxLengthLabel)
         maxLengthLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(0)
+            make.top.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
         }
         addSubview(maxLengthInput)
         maxLengthInput.snp.makeConstraints { make in
             make.top.equalTo(maxLengthLabel.snp.bottom).offset(Constants.Input.topOffset)
-            make.edges.equalToSuperview().offset(0)
+            make.horizontalEdges.bottom.equalToSuperview()
             make.height.equalTo(Constants.Input.height)
         }
         addSubview(maxLengthCountLabel)
         maxLengthCountLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(0)
+            make.trailing.bottom.equalToSuperview()
             make.centerY.equalTo(maxLengthLabel.snp.centerY)
         }
     }
 }
-
+//MARK: - UITextFieldDelegate
 extension MaxLengthView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        guard let text = textField.text else { return true }
+        let text = textField.text ?? ""
         let newLength = text.count + string.count - range.length
         if newLength > 10 {
             textField.layer.borderColor = Colors.red.cgColor
@@ -93,7 +96,7 @@ extension MaxLengthView: UITextFieldDelegate {
             maxLengthCountLabel.textColor = Colors.black
         }
         maxLengthCountLabel.text = "\(newLength)/10"
-
+        
         return true
     }
     

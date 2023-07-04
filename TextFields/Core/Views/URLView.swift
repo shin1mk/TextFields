@@ -38,13 +38,12 @@ final class URLView: UIView {
         input.returnKeyType = .go
         return input
     }()
-    private var buttonTappedHandler: ((String) -> Void)?
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         setupConstraints()
         setupTextFieldDelegate()
-        setupTapGestureRecognizer()
+        setupTextFieldTargetAction()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,6 +53,9 @@ final class URLView: UIView {
     
     private func setupTextFieldDelegate() {
         urlInput.delegate = self
+    }
+    
+    private func setupTextFieldTargetAction() {
         urlInput.addTarget(self, action: #selector(validateUrl(_:)), for: .editingChanged)
     }
     
@@ -70,15 +72,6 @@ final class URLView: UIView {
         }
     }
     
-    private func setupTapGestureRecognizer() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-        addGestureRecognizer(tapGesture)
-    }
-    
-    @objc private func handleTap() {
-        endEditing(true)
-    }
-    
     @objc private func buttonTapped() {
         guard var text = urlInput.text else {
             return
@@ -86,7 +79,7 @@ final class URLView: UIView {
         // add prefix if www
         if !text.hasPrefix("http://") && !text.hasPrefix("https://") {
             text = "https://" + text
-        }
+        } // tap button open safari in app (safariViewController)
         if let url = URL(string: text) {
             let safariViewController = SFSafariViewController(url: url)
             
@@ -121,7 +114,7 @@ final class URLView: UIView {
                     break
                 }
             }
-            // if suffix found start counter
+            // if suffix found start counter 5 sec
             if suffixFound {
                 textField.rightView = nil
                 
@@ -152,4 +145,11 @@ extension URLView: UITextFieldDelegate {
         }
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.layer.borderColor = Colors.blue.cgColor
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.layer.borderColor = Colors.inputGray.cgColor
+    }
 }

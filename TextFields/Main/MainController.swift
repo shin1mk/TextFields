@@ -7,7 +7,7 @@
 
 import UIKit
 import SnapKit
-import SafariServices
+//import SafariServices
 
 final class MainController: UIViewController {
     private let noDigitsView = NoDigitsView()
@@ -174,12 +174,21 @@ final class MainController: UIViewController {
         scrollView.addSubview(contentView)
         setupDelegates()
         setupScrollView()
+        setupTapGestureRecognizer()
     }
     
     private func setupDelegates() {
         validationInput.delegate = self
     }
+
+    private func setupTapGestureRecognizer() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGesture)
+    }
     
+    @objc private func handleTap() {
+        view.endEditing(true)
+    }
 } // class
 // MARK: - textfields
 extension MainController: UITextFieldDelegate {

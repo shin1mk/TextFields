@@ -9,7 +9,7 @@ import UIKit
 
     enum Constants {
         static let topOffset = 0
-        static let bottomOffset: CGFloat = (400)
+        static let bottomOffset: CGFloat = (10)
         static let leading = 16
         static let trailing = -16
 

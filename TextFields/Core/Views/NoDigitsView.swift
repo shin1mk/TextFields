@@ -66,6 +66,7 @@ final class NoDigitsView: UIView {
         }
     }
 }
+
 extension NoDigitsView: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard textField == noDigitsInput else {

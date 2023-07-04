@@ -92,6 +92,4 @@ extension OnlyCharactersView: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.layer.borderColor = Colors.inputGray.cgColor
     }
-    
 }
-

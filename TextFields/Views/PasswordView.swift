@@ -124,7 +124,6 @@ final class PasswordView: UIView {
             make.top.equalTo(minimalLowercaseLabel.snp.bottom).offset(Constants.Validation.topOffset)
             make.leading.equalToSuperview()
             make.trailing.lessThanOrEqualToSuperview()
-            // bottom ?
         }
     }
 }

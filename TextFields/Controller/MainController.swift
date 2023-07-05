@@ -110,7 +110,7 @@ final class MainController: UIViewController {
         scrollView.contentSize = contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
     }
 }
-
+// MARK: extension
 extension MainController {
     private func setupTapGestureRecognizer() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))

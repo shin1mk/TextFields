@@ -38,6 +38,7 @@ final class OnlyCharactersView: UIView {
         ])
         input.attributedPlaceholder = attributedPlaceholder
         input.returnKeyType = .done
+        input.accessibilityIdentifier = "onlyCharactersInput"
         return input
     }()
     //MARK: Initialization
